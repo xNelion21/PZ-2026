@@ -23,11 +23,15 @@ class AuthScaffold extends StatelessWidget {
     final screenSize = MediaQuery.sizeOf(context);
     final gutter = screenSize.width <= 355 ? 20.0 : 24.0;
     final keyboardVisible = MediaQuery.viewInsetsOf(context).bottom > 0;
+    final extraLoginTopPadding = ((screenSize.height - 640) * 0.2).clamp(
+      0.0,
+      48.0,
+    );
     final topPadding = keyboardVisible
         ? 24.0
         : isRegistration
         ? (screenSize.height * 0.075).clamp(32.0, 72.0)
-        : (screenSize.height * 0.12).clamp(64.0, 128.0);
+        : (screenSize.height * 0.12).clamp(64.0, 128.0) + extraLoginTopPadding;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,

@@ -40,21 +40,6 @@ class LoginScreen extends StatelessWidget {
           label: 'Utwórz konto',
           onPressed: () => context.push(AppRoutes.register),
         ),
-        const SizedBox(height: 12),
-        TextButton(
-          onPressed: null,
-          style: TextButton.styleFrom(
-            disabledForegroundColor: Theme.of(context).colorScheme.primary,
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Zobacz przykładowe podróże'),
-              SizedBox(width: 6),
-              Icon(Icons.arrow_forward, size: 16),
-            ],
-          ),
-        ),
         AuthTrail(claimAnimation: claimTrailAnimation),
       ],
     );
