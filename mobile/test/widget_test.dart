@@ -1,30 +1,69 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:pz_mobile/main.dart';
+import 'package:pz_mobile/app.dart';
+import 'package:pz_mobile/features/auth/screens/login_screen.dart';
+import 'package:pz_mobile/features/auth/screens/register_screen.dart';
+import 'package:pz_mobile/features/dashboard/screens/dashboard_screen.dart';
+import 'package:pz_mobile/routing/app_router.dart';
+import 'package:pz_mobile/routing/app_routes.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Auth navigation supports links and system back', (tester) async {
+    final router = createAppRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(TravelJournalApp(router: router));
+    await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.byType(LoginScreen), findsOneWidget);
+    expect(
+      tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
+      isNotNull,
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.tap(find.widgetWithText(TextButton, 'Utwórz konto'));
+    await tester.pumpAndSettle();
+    expect(find.byType(RegisterScreen), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.ensureVisible(find.widgetWithText(TextButton, 'Zaloguj się'));
+    await tester.tap(find.widgetWithText(TextButton, 'Zaloguj się'));
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginScreen), findsOneWidget);
+    expect(router.canPop(), isFalse);
+
+    await tester.tap(find.widgetWithText(TextButton, 'Utwórz konto'));
+    await tester.pumpAndSettle();
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginScreen), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(FilledButton, 'Zaloguj się'));
+    await tester.pumpAndSettle();
+    expect(find.byType(DashboardScreen), findsOneWidget);
+    expect(find.byType(LoginScreen), findsNothing);
+    expect(router.routeInformationProvider.value.uri.path, AppRoutes.dashboard);
+    expect(router.canPop(), isFalse);
+  });
+
+  testWidgets('Registration opened directly can return to login', (
+    tester,
+  ) async {
+    final router = createAppRouter(initialLocation: AppRoutes.register);
+    addTearDown(router.dispose);
+    await tester.pumpWidget(TravelJournalApp(router: router));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(RegisterScreen), findsOneWidget);
+    expect(
+      tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
+      isNull,
+    );
+
+    await tester.ensureVisible(find.widgetWithText(TextButton, 'Zaloguj się'));
+    await tester.tap(find.widgetWithText(TextButton, 'Zaloguj się'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LoginScreen), findsOneWidget);
+    expect(router.routeInformationProvider.value.uri.path, AppRoutes.login);
+    expect(tester.takeException(), isNull);
   });
 }
