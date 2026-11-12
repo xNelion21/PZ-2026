@@ -1,6 +1,5 @@
 package com.pz.pz.dto;
 
-import com.pz.pz.model.Trip;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +16,4 @@ public class TripPointResponseDto {
     private Double longitude;
     private String countryCode;
     private Integer orderIndex;
-    private Trip trip;
 }
