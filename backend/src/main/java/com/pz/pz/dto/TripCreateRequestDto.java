@@ -30,11 +30,9 @@ public class TripCreateRequestDto {
 
     private String description;
 
-    @Valid
-    private List<TripPointRequestDto> points;
+    private List<@Valid TripPointRequestDto> points;
 
-    @Valid
-    private List<TripSegmentRequestDto> segments;
+    private List<@Valid TripSegmentRequestDto> segments;
 
     @JsonIgnore
     @AssertTrue(message = "End date cannot be earlier than start date")
