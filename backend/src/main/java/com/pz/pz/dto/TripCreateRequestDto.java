@@ -1,5 +1,6 @@
 package com.pz.pz.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
@@ -35,7 +36,8 @@ public class TripCreateRequestDto {
     @Valid
     private List<TripSegmentRequestDto> segments;
 
-    @AssertTrue
+    @JsonIgnore
+    @AssertTrue(message = "End date cannot be earlier than start date")
     public boolean isDateRangeValid() {
         if (startDate == null || endDate == null) {
             return true;
