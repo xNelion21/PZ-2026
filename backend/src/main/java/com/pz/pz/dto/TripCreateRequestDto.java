@@ -30,8 +30,10 @@ public class TripCreateRequestDto {
 
     private String description;
 
+    @NotNull(message = "Points list cannot be null")
     private List<@Valid TripPointRequestDto> points;
 
+    @NotNull(message = "Segments list cannot be null")
     private List<@Valid TripSegmentRequestDto> segments;
 
     @JsonIgnore
