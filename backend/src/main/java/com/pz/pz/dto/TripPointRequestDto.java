@@ -27,7 +27,7 @@ public class TripPointRequestDto {
 
     @NotNull
     @Size(min = 2, max = 2, message = "Country Code has length of 2 characters")
-    @Pattern(regexp = "^[A-Z]{2}$", message = "Country Code has to be 2 capital letters")
+    @Pattern(regexp = "^[A-Z]{2}$", message = "Country Code must be 2 capital letters")
     private String countryCode;
 
     @NotNull

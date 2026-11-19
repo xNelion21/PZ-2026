@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TripCreateRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Title cannot be blank")
     private String title;
 
     @NotNull
