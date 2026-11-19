@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TripPointRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @NotNull
