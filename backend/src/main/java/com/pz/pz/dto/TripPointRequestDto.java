@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TripPointRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @NotNull
@@ -25,6 +25,9 @@ public class TripPointRequestDto {
     @DecimalMax(value = "180.0")
     private Double longitude;
 
+    @NotNull
+    @Size(min = 2, max = 2, message = "Country Code has length of 2 characters")
+    @Pattern(regexp = "^[A-Z]{2}$", message = "Country Code must be 2 capital letters")
     private String countryCode;
 
     @NotNull

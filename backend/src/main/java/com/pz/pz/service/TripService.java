@@ -67,6 +67,7 @@ public class TripService {
         trip.setDescription(dto.getDescription());
 
         trip.getSegments().clear();
+        tripRepository.flush();
         trip.getPoints().clear();
         tripRepository.flush();
 
@@ -79,6 +80,8 @@ public class TripService {
     @Transactional
     public void deleteTrip(Long tripId, Long userId) {
         Trip trip = getTripIfOwner(tripId, userId);
+        trip.getSegments().clear();
+        tripRepository.flush();
         tripRepository.delete(trip);
     }
 
