@@ -25,6 +25,8 @@ public class TripPointRequestDto {
     @DecimalMax(value = "180.0")
     private Double longitude;
 
+    @Size(min = 2, max = 2)
+    @Pattern(regexp = "^[A-Z]{2}$")
     private String countryCode;
 
     @NotNull
