@@ -10,6 +10,7 @@ import com.pz.pz.repository.TripRepository;
 import com.pz.pz.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,19 @@ public class TripService {
     @Transactional(readOnly = true)
     public List<TripSummaryResponseDto> getUserTrips(Long userId) {
         return tripRepository.findAllByUserId(userId).stream()
+                .map(tripMapper::toSummaryDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TripSummaryResponseDto> getPublicUserTrips(Long targetUserId) {
+        User user = userRepository.findById(targetUserId).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + targetUserId));
+
+        if (!user.isPublic()) {
+            throw new AccessDeniedException("User profile with id " + targetUserId + " is not public");
+        }
+
+        return tripRepository.findAllByUserId(targetUserId).stream()
                 .map(tripMapper::toSummaryDto)
                 .toList();
     }
