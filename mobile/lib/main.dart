@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'routing/app_router.dart';
 
 void main() {
-  runApp(TravelJournalApp(router: createAppRouter()));
+  runApp(ProviderScope(child: TravelJournalApp(router: createAppRouter())));
 }
